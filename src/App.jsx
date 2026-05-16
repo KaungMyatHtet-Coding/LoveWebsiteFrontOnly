@@ -11,7 +11,7 @@ const constellations = [
     id: 1,
     title: "First Meet",
     story: "The first day our eyes met, my whole universe changed direction.",
-    image: "/1.jfif",
+    image: "/images/1.jfif",
     points: [
       { x: 14, y: 34 },
       { x: 22, y: 23 },
@@ -23,7 +23,7 @@ const constellations = [
     id: 2,
     title: "First Call",
     story: "That call felt short, but the heartbeat it gave me still lasts.",
-    image: "/2.jfif",
+    image: "/images/2.jfif",
     points: [
       { x: 58, y: 20 },
       { x: 66, y: 30 },
@@ -35,7 +35,7 @@ const constellations = [
     id: 3,
     title: "First Fight",
     story: "Even in our first storm, I knew love was stronger than ego.",
-    image: "/3.jfif",
+    image: "/images/3.jfif",
     points: [
       { x: 18, y: 66 },
       { x: 28, y: 59 },
@@ -47,7 +47,7 @@ const constellations = [
     id: 4,
     title: "Future Dreams",
     story: "A thousand little promises, one shared future, and forever us.",
-    image: "/4.jfif",
+    image: "/images/4.jfif",
     points: [
       { x: 60, y: 62 },
       { x: 69, y: 73 },
@@ -58,22 +58,29 @@ const constellations = [
 ];
 
 const albumImages = {
-  K: ["/1.jfif", "/2.jfif", "/3.jfif", "/4.jfif", "/5.jfif", "/6.jfif"],
+  K: [
+    "/images/1.jfif",
+    "/images/2.jfif",
+    "/images/3.jfif",
+    "/images/4.jfif",
+    "/images/5.jfif",
+    "/images/6.jfif",
+  ],
   Baby: [
-    "/7.jfif",
-    "/8.jfif",
-    "/9.jfif",
-    "/10.jfif",
-    "/11.jfif",
-    "/12.jfif",
-    "/13.jfif",
+    "/images/7.jfif",
+    "/images/8.jfif",
+    "/images/9.jfif",
+    "/images/10.jfif",
+    "/images/11.jfif",
+    "/images/12.jfif",
+    "/images/13.jfif",
   ],
 };
 
 const talkingClips = [
   {
     title: "ForYouMyLove",
-    src: "/For%20Baby%20%F0%9F%92%9E.m4a",
+    src: "/audio/For%20_baby.m4a",
     type: "audio/mp4",
   },
 ];
@@ -81,22 +88,22 @@ const talkingClips = [
 const musicClips = [
   {
     title: "အလကား",
-    src: "/အလကား.m4a",
+    src: "/audio/အလကား.m4a",
     type: "audio/mp4",
   },
   {
     title: "ရက်ရာဇာ",
-    src: "/ရက်ရာဇာ.m4a",
+    src: "/audio/ရက်ရာဇာ.m4a",
     type: "audio/mp4",
   },
   {
     title: "ဘယ်လိုလုပ်ရမလဲ",
-    src: "/ဘယ်လိုလုပ်ရမလဲ.m4a",
+    src: "/audio/ဘယ်လိုလုပ်ရမလဲ.m4a",
     type: "audio/mp4",
   },
   {
     title: "ပီးနောက်",
-    src: "/ပီးနောက်.m4a",
+    src: "/audio/ပီးနောက်.m4a",
     type: "audio/mp4",
   },
 ];
@@ -130,11 +137,11 @@ const rainDrops = Array.from({ length: 40 }, (_, i) => ({
 }));
 
 const pageBackground = {
-  stars: "/background1.jfif",
-  gallery: "/background2.jfif",
-  voice: "/background1.jfif",
-  love: "/background2.jfif",
-  letters: "/background1.jfif",
+  stars: "/images/background1.jfif",
+  gallery: "/images/background2.jfif",
+  voice: "/images/background1.jfif",
+  love: "/images/background2.jfif",
+  letters: "/images/background1.jfif",
 };
 
 const letters = [
@@ -330,7 +337,7 @@ export default function App() {
   const activePhoto =
     activeAlbumPhotos[activePhotoIndex] ||
     activeAlbumPhotos[0] ||
-    "/background2.jfif";
+    "/images/background2.jfif";
   const activeLetter = letters.find((letter) => letter.id === activeLetterId);
   const relationshipDays = useMemo(() => {
     const start = startOfDay(new Date(RELATIONSHIP_START_DATE)).getTime();
@@ -434,7 +441,7 @@ export default function App() {
   if (stage === "nicknames") {
     return (
       <main className="relative flex min-h-screen items-center justify-center px-4">
-        <BackgroundLayer image="/first.jfif" />
+        <BackgroundLayer image="/images/first.jfif" />
         <motion.form
           onSubmit={submitNicknames}
           initial={{ opacity: 0, y: 24 }}
@@ -465,7 +472,7 @@ export default function App() {
   if (stage === "password") {
     return (
       <main className="relative flex min-h-screen items-center justify-center px-4">
-        <BackgroundLayer image="/first.jfif" />
+        <BackgroundLayer image="/images/first.jfif" />
         <motion.form
           onSubmit={submitPassword}
           initial={{ opacity: 0, scale: 0.95 }}
@@ -497,7 +504,7 @@ export default function App() {
   return (
     <main className="relative min-h-screen overflow-hidden px-4 py-8 md:px-8">
       <BackgroundLayer image={pageBackground[page]} />
-      <audio ref={musicRef} loop src="/athousandyears.mp3" />
+      <audio ref={musicRef} loop src="/audio/athousandyears.mp3" />
       <audio
         ref={clipRef}
         src={currentClipSrc}
