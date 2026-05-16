@@ -108,6 +108,13 @@ body {
     0 0 24px rgba(244, 114, 182, 0.55);
 }
 
+.handwritten {
+  font-family: "Segoe Script", "Comic Sans MS", cursive;
+  box-shadow:
+    0 8px 26px rgba(0, 0, 0, 0.2),
+    inset 0 0 24px rgba(251, 191, 36, 0.2);
+}
+
 @keyframes rainfall {
   to {
     transform: translateY(120vh);

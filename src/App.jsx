@@ -6,38 +6,54 @@ const ALBUM_PASSWORD = "mylove";
 const RELATIONSHIP_START_DATE = "2026-04-21T00:00:00";
 const ALLOWED_NAMES = ["K", "Baby"];
 
-const memories = [
+const constellations = [
   {
     id: 1,
-    title: "Our First Chat",
-    message: "The night we couldn't stop smiling at our phones.",
+    title: "First Meet",
+    story: "The first day our eyes met, my whole universe changed direction.",
     image: "/1.jfif",
-    top: "18%",
-    left: "26%",
+    points: [
+      { x: 14, y: 34 },
+      { x: 22, y: 23 },
+      { x: 30, y: 36 },
+      { x: 39, y: 27 },
+    ],
   },
   {
     id: 2,
-    title: "First Date",
-    message: "Coffee, laughter, and that look in your eyes.",
+    title: "First Call",
+    story: "That call felt short, but the heartbeat it gave me still lasts.",
     image: "/2.jfif",
-    top: "35%",
-    left: "68%",
+    points: [
+      { x: 58, y: 20 },
+      { x: 66, y: 30 },
+      { x: 74, y: 22 },
+      { x: 82, y: 35 },
+    ],
   },
   {
     id: 3,
-    title: "Movie Night",
-    message: "You rested your head on my shoulder. Time stopped.",
+    title: "First Fight",
+    story: "Even in our first storm, I knew love was stronger than ego.",
     image: "/3.jfif",
-    top: "56%",
-    left: "34%",
+    points: [
+      { x: 18, y: 66 },
+      { x: 28, y: 59 },
+      { x: 36, y: 70 },
+      { x: 46, y: 62 },
+    ],
   },
   {
     id: 4,
-    title: "Rainy Walk",
-    message: "Wet shoes, warm hearts, and endless jokes.",
+    title: "Future Dreams",
+    story: "A thousand little promises, one shared future, and forever us.",
     image: "/4.jfif",
-    top: "68%",
-    left: "73%",
+    points: [
+      { x: 60, y: 62 },
+      { x: 69, y: 73 },
+      { x: 78, y: 64 },
+      { x: 86, y: 76 },
+    ],
   },
 ];
 
@@ -118,7 +134,29 @@ const pageBackground = {
   gallery: "/background2.jfif",
   voice: "/background1.jfif",
   love: "/background2.jfif",
+  letters: "/background1.jfif",
 };
+
+const letters = [
+  {
+    id: "l1",
+    title: "Open when sad",
+    date: "2026-05-16",
+    body: "My love, breathe slowly. You are never alone. Even in silence, I am right here with you. Your smile is my favorite light, and I will keep choosing you every day.",
+  },
+  {
+    id: "l2",
+    title: "Open when missing me",
+    date: "2026-05-17",
+    body: "If you miss me, put your hand on your heart. That beat is my answer. Distance is small when two hearts are this close. I love you, always.",
+  },
+  {
+    id: "l3",
+    title: "For our future",
+    date: "2026-05-18",
+    body: "One day we will read this together and smile. We will build soft mornings, warm nights, and a home full of laughter. You are my forever plan.",
+  },
+];
 
 function startOfDay(date) {
   return new Date(date.getFullYear(), date.getMonth(), date.getDate());
@@ -230,6 +268,7 @@ export default function App() {
   const [noAttempts, setNoAttempts] = useState(0);
   const [askSure, setAskSure] = useState(false);
   const [noBtnPos, setNoBtnPos] = useState({ x: 68, y: 56 });
+  const [activeLetterId, setActiveLetterId] = useState("");
   const [currentClipSrc, setCurrentClipSrc] = useState("");
   const [currentClipType, setCurrentClipType] = useState("audio/mp4");
   const [currentClipTitle, setCurrentClipTitle] = useState("");
@@ -281,6 +320,13 @@ export default function App() {
   const activeAlbumPhotos = albumImages[activeAlbum] || [];
   const activePhoto =
     activeAlbumPhotos[activePhotoIndex] || activeAlbumPhotos[0] || "/background2.jfif";
+  const activeLetter = letters.find((letter) => letter.id === activeLetterId);
+  const relationshipDays = useMemo(() => {
+    const start = startOfDay(new Date(RELATIONSHIP_START_DATE)).getTime();
+    const today = startOfDay(now).getTime();
+    if (today < start) return 0;
+    return Math.floor((today - start) / (24 * 60 * 60 * 1000)) + 1;
+  }, [now]);
 
   const submitNicknames = (e) => {
     e.preventDefault();
@@ -527,6 +573,9 @@ export default function App() {
           <p className="romantic-subtext text-sm text-slate-200">
             Among billions of stars, my heart still chose you.
           </p>
+          <p className="romantic-subtext mt-1 text-xs text-pink-200">
+            {relationshipDays} days loving you endlessly.
+          </p>
         </div>
         <div className="flex flex-wrap items-center justify-end gap-2">
           <button
@@ -570,6 +619,13 @@ export default function App() {
             {label}
           </button>
         ))}
+        <button
+          onClick={() => setPage("letters")}
+          className="rounded-lg border border-pink-300/40 bg-pink-500/10 px-3 py-2 text-sm text-pink-100 hover:bg-pink-500/20"
+          title="Letters For You"
+        >
+          💌
+        </button>
       </nav>
 
       {page === "stars" && (
@@ -612,19 +668,58 @@ export default function App() {
           </article>
 
           <article className="rounded-2xl border border-slate-700 bg-slate-900/45 p-5">
-            <h2 className="mb-4 text-xl font-bold text-amber-200">Memory Galaxy</h2>
+            <h2 className="mb-4 text-xl font-bold text-amber-200">Constellation Memories</h2>
             <div className="relative h-[320px] overflow-hidden rounded-xl bg-slate-950/70">
-              {memories.map((memory) => (
-                <motion.button
-                  key={memory.id}
-                  whileHover={{ scale: 1.18 }}
-                  onClick={() => setActiveMemory(memory)}
-                  className="star-glow absolute h-4 w-4 rounded-full bg-amber-300"
-                  style={{ top: memory.top, left: memory.left }}
-                />
+              <svg className="pointer-events-none absolute inset-0 h-full w-full">
+                {constellations.map((constellation) =>
+                  constellation.points.slice(0, -1).map((point, index) => {
+                    const next = constellation.points[index + 1];
+                    return (
+                      <line
+                        key={`${constellation.id}-line-${index}`}
+                        x1={`${point.x}%`}
+                        y1={`${point.y}%`}
+                        x2={`${next.x}%`}
+                        y2={`${next.y}%`}
+                        stroke="rgba(251, 191, 36, 0.6)"
+                        strokeWidth="1.5"
+                      />
+                    );
+                  })
+                )}
+              </svg>
+              {constellations.map((constellation) =>
+                constellation.points.map((point, index) => (
+                  <motion.button
+                    key={`${constellation.id}-star-${index}`}
+                    whileHover={{ scale: 1.2 }}
+                    onClick={() => setActiveMemory(constellation)}
+                    className="star-glow absolute rounded-full bg-amber-300"
+                    style={{
+                      top: `${point.y}%`,
+                      left: `${point.x}%`,
+                      width: index === 0 ? "12px" : "10px",
+                      height: index === 0 ? "12px" : "10px",
+                      transform: "translate(-50%, -50%)",
+                    }}
+                  />
+                ))
+              )}
+              {constellations.map((constellation) => (
+                <button
+                  key={`${constellation.id}-label`}
+                  onClick={() => setActiveMemory(constellation)}
+                  className="absolute rounded-md bg-slate-900/60 px-2 py-1 text-xs text-pink-100 hover:bg-pink-500/30"
+                  style={{
+                    top: `${constellation.points[0].y + 4}%`,
+                    left: `${constellation.points[0].x + 2}%`,
+                  }}
+                >
+                  {constellation.title}
+                </button>
               ))}
               <p className="absolute bottom-3 left-3 text-xs text-slate-400">
-                Click any memory star.
+                Click any constellation to open its story.
               </p>
             </div>
           </article>
@@ -816,6 +911,48 @@ export default function App() {
         </section>
       )}
 
+      {page === "letters" && (
+        <section className="mx-auto grid max-w-6xl gap-6 lg:grid-cols-[300px,1fr]">
+          <article className="rounded-2xl border border-slate-700 bg-slate-900/45 p-5">
+            <h3 className="mb-4 text-lg font-bold text-pink-200">Letters For You</h3>
+            <div className="space-y-3">
+              {letters.map((letter) => (
+                <button
+                  key={letter.id}
+                  onClick={() => setActiveLetterId(letter.id)}
+                  className={`w-full rounded-lg border px-3 py-3 text-left ${
+                    activeLetterId === letter.id
+                      ? "border-pink-300 bg-pink-500/20"
+                      : "border-slate-600 bg-slate-900/50 hover:border-pink-300/60"
+                  }`}
+                >
+                  <p className="text-sm font-semibold text-pink-100">{letter.title}</p>
+                  <p className="text-xs text-slate-300">{letter.date}</p>
+                </button>
+              ))}
+            </div>
+          </article>
+
+          <article className="rounded-2xl border border-slate-700 bg-slate-900/45 p-5">
+            {!activeLetter ? (
+              <div className="grid h-full min-h-[320px] place-items-center rounded-xl border border-dashed border-pink-300/35 bg-slate-950/45">
+                <p className="text-center text-slate-300">
+                  Choose a letter to open it 💌
+                </p>
+              </div>
+            ) : (
+              <div className="handwritten min-h-[320px] rounded-xl border border-amber-200/30 bg-amber-50/95 p-6 text-slate-900">
+                <p className="mb-1 text-sm text-slate-700">{activeLetter.date}</p>
+                <h4 className="mb-4 text-2xl font-bold text-pink-700">
+                  {activeLetter.title}
+                </h4>
+                <p className="leading-8">{activeLetter.body}</p>
+              </div>
+            )}
+          </article>
+        </section>
+      )}
+
       <section className="mx-auto mt-10 max-w-4xl rounded-2xl border border-pink-400/40 bg-slate-900/45 p-6 text-center">
         <Typewriter text="In every universe, I'd still choose you." />
       </section>
@@ -882,7 +1019,7 @@ export default function App() {
               <h4 className="text-xl font-bold text-amber-200">
                 {activeMemory.title}
               </h4>
-              <p className="mt-2 text-slate-200">{activeMemory.message}</p>
+              <p className="mt-2 text-slate-200">{activeMemory.story}</p>
             </motion.div>
           </motion.div>
         )}
