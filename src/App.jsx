@@ -262,7 +262,10 @@ export default function App() {
   const [unlockTarget, setUnlockTarget] = useState("");
   const [albumPasswordInput, setAlbumPasswordInput] = useState("");
   const [albumPasswordError, setAlbumPasswordError] = useState("");
-  const [unlockedAlbums, setUnlockedAlbums] = useState({ K: false, Baby: false });
+  const [unlockedAlbums, setUnlockedAlbums] = useState({
+    K: false,
+    Baby: false,
+  });
 
   const [showLoveReveal, setShowLoveReveal] = useState(false);
   const [noAttempts, setNoAttempts] = useState(0);
@@ -303,23 +306,31 @@ export default function App() {
   useEffect(() => {
     if (!currentClipSrc || !clipRef.current) return;
     clipRef.current.currentTime = 0;
-    clipRef.current.play().then(() => setIsClipPlaying(true)).catch(() => null);
+    clipRef.current
+      .play()
+      .then(() => setIsClipPlaying(true))
+      .catch(() => null);
   }, [currentClipSrc]);
 
   const partnerName = currentUser === "K" ? "Baby" : "K";
-  const { normalStars, shinyStars } = useMemo(() => getStarProgress(now), [now]);
+  const { normalStars, shinyStars } = useMemo(
+    () => getStarProgress(now),
+    [now],
+  );
   const normalStarLayout = useMemo(
     () => buildStarLayout(normalStars, 0),
-    [normalStars]
+    [normalStars],
   );
   const shinyStarLayout = useMemo(
     () => buildStarLayout(shinyStars, normalStars),
-    [normalStars, shinyStars]
+    [normalStars, shinyStars],
   );
   const isActiveAlbumUnlocked = unlockedAlbums[activeAlbum];
   const activeAlbumPhotos = albumImages[activeAlbum] || [];
   const activePhoto =
-    activeAlbumPhotos[activePhotoIndex] || activeAlbumPhotos[0] || "/background2.jfif";
+    activeAlbumPhotos[activePhotoIndex] ||
+    activeAlbumPhotos[0] ||
+    "/background2.jfif";
   const activeLetter = letters.find((letter) => letter.id === activeLetterId);
   const relationshipDays = useMemo(() => {
     const start = startOfDay(new Date(RELATIONSHIP_START_DATE)).getTime();
@@ -407,7 +418,10 @@ export default function App() {
     }
     if (!clipRef.current) return;
     clipRef.current.currentTime = 0;
-    clipRef.current.play().then(() => setIsClipPlaying(true)).catch(() => null);
+    clipRef.current
+      .play()
+      .then(() => setIsClipPlaying(true))
+      .catch(() => null);
   };
 
   const stopClip = () => {
@@ -483,11 +497,7 @@ export default function App() {
   return (
     <main className="relative min-h-screen overflow-hidden px-4 py-8 md:px-8">
       <BackgroundLayer image={pageBackground[page]} />
-      <audio
-        ref={musicRef}
-        loop
-        src="/athousandyears.mp3"
-      />
+      <audio ref={musicRef} loop src="/athousandyears.mp3" />
       <audio
         ref={clipRef}
         src={currentClipSrc}
@@ -569,7 +579,9 @@ export default function App() {
 
       <header className="mx-auto mb-6 flex max-w-6xl flex-col items-center justify-between gap-4 rounded-2xl border border-slate-700/70 bg-slate-900/40 p-4 md:flex-row">
         <div>
-          <h1 className="sparkle-text text-3xl font-black text-amber-100">Our Universe</h1>
+          <h1 className="sparkle-text text-3xl font-black text-amber-100">
+            Our Universe
+          </h1>
           <p className="romantic-subtext text-sm text-slate-200">
             Among billions of stars, my heart still chose you.
           </p>
@@ -586,7 +598,8 @@ export default function App() {
           </button>
           {currentClipTitle && (
             <span className="rounded-lg border border-slate-500 bg-slate-900/60 px-3 py-2 text-xs text-slate-200">
-              Now playing: {currentClipTitle} {isClipPlaying ? "(Playing)" : "(Paused/Ended)"}
+              Now playing: {currentClipTitle}{" "}
+              {isClipPlaying ? "(Playing)" : "(Paused/Ended)"}
             </span>
           )}
           {currentClipTitle && (
@@ -636,7 +649,11 @@ export default function App() {
                 key={`n-${star.id}`}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: [0.35, 1, 0.35] }}
-                transition={{ duration: 2.4, delay: star.delay, repeat: Infinity }}
+                transition={{
+                  duration: 2.4,
+                  delay: star.delay,
+                  repeat: Infinity,
+                }}
                 className="absolute h-[7px] w-[7px] rounded-full bg-amber-200"
                 style={{
                   left: star.left,
@@ -650,7 +667,11 @@ export default function App() {
                 key={`s-${star.id}`}
                 initial={{ scale: 0.75, opacity: 0 }}
                 animate={{ scale: [1, 1.22, 1], opacity: [0.55, 1, 0.55] }}
-                transition={{ duration: 1.9, delay: star.delay, repeat: Infinity }}
+                transition={{
+                  duration: 1.9,
+                  delay: star.delay,
+                  repeat: Infinity,
+                }}
                 className="absolute h-[14px] w-[14px] rounded-full bg-pink-200"
                 style={{
                   left: star.left,
@@ -660,6 +681,11 @@ export default function App() {
                 }}
               />
             ))}
+            <div className="background-text">
+              ကောင်းကင်ကြီး မှောင်မည်းပြီး တိတ်ဆိတ်သွားရင်တောင်...
+              ဘေဘီအပေါ်ထားတဲ့ ကို့အချစ်တွေက ဘယ်ကြယ်ပွင့်ထက်မဆို
+              ပိုလင်းလက်နေမယ်ဆိုတာ သတိရပေးပါ။
+            </div>
             <div className="absolute bottom-4 left-4 rounded-lg border border-slate-600/60 bg-slate-900/65 px-3 py-2">
               <p className="text-sm text-slate-200">
                 Daily stars + monthly shiny stars.
@@ -668,7 +694,9 @@ export default function App() {
           </article>
 
           <article className="rounded-2xl border border-slate-700 bg-slate-900/45 p-5">
-            <h2 className="mb-4 text-xl font-bold text-amber-200">Constellation Memories</h2>
+            <h2 className="mb-4 text-xl font-bold text-amber-200">
+              Constellation Memories
+            </h2>
             <div className="relative h-[320px] overflow-hidden rounded-xl bg-slate-950/70">
               <svg className="pointer-events-none absolute inset-0 h-full w-full">
                 {constellations.map((constellation) =>
@@ -685,7 +713,7 @@ export default function App() {
                         strokeWidth="1.5"
                       />
                     );
-                  })
+                  }),
                 )}
               </svg>
               {constellations.map((constellation) =>
@@ -703,7 +731,7 @@ export default function App() {
                       transform: "translate(-50%, -50%)",
                     }}
                   />
-                ))
+                )),
               )}
               {constellations.map((constellation) => (
                 <button
@@ -729,7 +757,9 @@ export default function App() {
       {page === "gallery" && (
         <section className="mx-auto grid max-w-6xl gap-6 lg:grid-cols-[280px,1fr]">
           <article className="rounded-2xl border border-slate-700 bg-slate-900/45 p-5">
-            <h3 className="mb-4 text-lg font-bold text-pink-200">Choose Album</h3>
+            <h3 className="mb-4 text-lg font-bold text-pink-200">
+              Choose Album
+            </h3>
             <p className="mb-3 text-sm text-slate-300">
               Please enter one of these 2 sections:
             </p>
@@ -750,7 +780,9 @@ export default function App() {
           </article>
 
           <article className="rounded-2xl border border-slate-700 bg-slate-900/45 p-5">
-            <h3 className="mb-4 text-lg font-bold text-pink-200">Dear My love-</h3>
+            <h3 className="mb-4 text-lg font-bold text-pink-200">
+              Dear My love-
+            </h3>
             <div className="rounded-xl border border-slate-700 bg-slate-950/55 p-3">
               {galleryState === "start" ? (
                 <>
@@ -766,7 +798,9 @@ export default function App() {
               ) : (
                 <>
                   <img
-                    src={isActiveAlbumUnlocked ? activePhoto : "/background2.jfif"}
+                    src={
+                      isActiveAlbumUnlocked ? activePhoto : "/background2.jfif"
+                    }
                     alt={
                       isActiveAlbumUnlocked
                         ? `${activeAlbum} photo ${activePhotoIndex + 1}`
@@ -784,7 +818,7 @@ export default function App() {
                       <button
                         onClick={() =>
                           setActivePhotoIndex((idx) =>
-                            idx === 0 ? activeAlbumPhotos.length - 1 : idx - 1
+                            idx === 0 ? activeAlbumPhotos.length - 1 : idx - 1,
                           )
                         }
                         className="rounded-lg border border-slate-400 px-3 py-1 text-xs text-slate-100"
@@ -794,7 +828,7 @@ export default function App() {
                       <button
                         onClick={() =>
                           setActivePhotoIndex((idx) =>
-                            idx === activeAlbumPhotos.length - 1 ? 0 : idx + 1
+                            idx === activeAlbumPhotos.length - 1 ? 0 : idx + 1,
                           )
                         }
                         className="rounded-lg border border-slate-400 px-3 py-1 text-xs text-slate-100"
@@ -846,7 +880,9 @@ export default function App() {
           </article>
 
           <article className="rounded-2xl border border-slate-700 bg-slate-900/45 p-5">
-            <h3 className="mb-3 text-lg font-bold text-cyan-200">Music (My Songs)</h3>
+            <h3 className="mb-3 text-lg font-bold text-cyan-200">
+              Music (My Songs)
+            </h3>
             <div className="space-y-4">
               {musicClips.map((clip) => (
                 <div
@@ -914,7 +950,9 @@ export default function App() {
       {page === "letters" && (
         <section className="mx-auto grid max-w-6xl gap-6 lg:grid-cols-[300px,1fr]">
           <article className="rounded-2xl border border-slate-700 bg-slate-900/45 p-5">
-            <h3 className="mb-4 text-lg font-bold text-pink-200">Letters For You</h3>
+            <h3 className="mb-4 text-lg font-bold text-pink-200">
+              Letters For You
+            </h3>
             <div className="space-y-3">
               {letters.map((letter) => (
                 <button
@@ -926,7 +964,9 @@ export default function App() {
                       : "border-slate-600 bg-slate-900/50 hover:border-pink-300/60"
                   }`}
                 >
-                  <p className="text-sm font-semibold text-pink-100">{letter.title}</p>
+                  <p className="text-sm font-semibold text-pink-100">
+                    {letter.title}
+                  </p>
                   <p className="text-xs text-slate-300">{letter.date}</p>
                 </button>
               ))}
@@ -942,7 +982,9 @@ export default function App() {
               </div>
             ) : (
               <div className="handwritten min-h-[320px] rounded-xl border border-amber-200/30 bg-amber-50/95 p-6 text-slate-900">
-                <p className="mb-1 text-sm text-slate-700">{activeLetter.date}</p>
+                <p className="mb-1 text-sm text-slate-700">
+                  {activeLetter.date}
+                </p>
                 <h4 className="mb-4 text-2xl font-bold text-pink-700">
                   {activeLetter.title}
                 </h4>
@@ -985,7 +1027,9 @@ export default function App() {
                 placeholder="Enter album password"
               />
               {albumPasswordError && (
-                <p className="mt-2 text-sm text-rose-300">{albumPasswordError}</p>
+                <p className="mt-2 text-sm text-rose-300">
+                  {albumPasswordError}
+                </p>
               )}
               <button className="mt-4 w-full rounded-lg bg-pink-500 px-4 py-2 font-semibold text-white">
                 Open album
