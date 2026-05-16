@@ -791,60 +791,56 @@ export default function App() {
               Dear My love-
             </h3>
             <div className="rounded-xl border border-slate-700 bg-slate-950/55 p-3">
-              {galleryState === "start" ? (
-                <>
-                  <img
-                    src="/background2.jfif"
-                    alt="Dear My love"
-                    className="h-[420px] w-full rounded-lg object-cover"
-                  />
-                  <p className="pt-3 text-center text-sm text-slate-200">
-                    Choose K or Baby album to open photos.
-                  </p>
-                </>
-              ) : (
-                <>
-                  <img
-                    src={
-                      isActiveAlbumUnlocked ? activePhoto : "/background2.jfif"
-                    }
-                    alt={
-                      isActiveAlbumUnlocked
-                        ? `${activeAlbum} photo ${activePhotoIndex + 1}`
-                        : `${activeAlbum} album locked`
-                    }
-                    className="h-[420px] w-full rounded-lg object-cover"
-                  />
-                  <p className="pt-3 text-center text-sm text-slate-200">
-                    {isActiveAlbumUnlocked
-                      ? `${activeAlbum} photo ${activePhotoIndex + 1} / ${activeAlbumPhotos.length}`
-                      : "Locked • Enter password to see photo"}
-                  </p>
-                  {isActiveAlbumUnlocked && activeAlbumPhotos.length > 1 && (
-                    <div className="mt-3 flex justify-center gap-2">
+              {galleryState === "view" && isActiveAlbumUnlocked ? (
+                <div className="relative h-[420px] w-full">
+                  <AnimatePresence mode="wait">
+                    <motion.img
+                      key={activePhoto}
+                      src={activePhoto}
+                      alt={`${activeAlbum} photo ${activePhotoIndex + 1}`}
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -20 }}
+                      transition={{ duration: 0.3 }}
+                      className="h-full w-full rounded-lg object-contain"
+                    />
+                  </AnimatePresence>
+                  {galleryState === "view" && activeAlbumPhotos.length > 1 && (
+                    <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between">
                       <button
                         onClick={() =>
-                          setActivePhotoIndex((idx) =>
-                            idx === 0 ? activeAlbumPhotos.length - 1 : idx - 1,
+                          setActivePhotoIndex((p) =>
+                            p > 0 ? p - 1 : activeAlbumPhotos.length - 1,
                           )
                         }
-                        className="rounded-lg border border-slate-400 px-3 py-1 text-xs text-slate-100"
+                        className="rounded-full bg-black/40 px-3 py-1 text-white"
                       >
-                        Prev
+                        ←
                       </button>
+                      <span className="rounded-full bg-black/40 px-3 py-1 text-sm text-white">
+                        {activePhotoIndex + 1} / {activeAlbumPhotos.length}
+                      </span>
                       <button
                         onClick={() =>
-                          setActivePhotoIndex((idx) =>
-                            idx === activeAlbumPhotos.length - 1 ? 0 : idx + 1,
+                          setActivePhotoIndex((p) =>
+                            p < activeAlbumPhotos.length - 1 ? p + 1 : 0,
                           )
                         }
-                        className="rounded-lg border border-slate-400 px-3 py-1 text-xs text-slate-100"
+                        className="rounded-full bg-black/40 px-3 py-1 text-white"
                       >
-                        Next
+                        →
                       </button>
                     </div>
                   )}
-                </>
+                </div>
+              ) : (
+                <div className="grid h-[420px] w-full place-items-center">
+                  <p className="text-center text-slate-300">
+                    {galleryState === "start"
+                      ? "Choose K or Baby album to open photos."
+                      : "Locked • Enter password to see photo"}
+                  </p>
+                </div>
               )}
             </div>
           </article>
